@@ -63,7 +63,6 @@ const Dropdown: FC<DropdownProps> = ({
                     onClick={onClick}
                     className={clsx(
                       "text-left flex gap-2 px-4 py-2 text-sm w-full items-center disabled:opacity-50 disabled:cursor-not-allowed",
-                
                       {
                         "text-blue-gray-900": active,
                         "text-slate-900": !active,
