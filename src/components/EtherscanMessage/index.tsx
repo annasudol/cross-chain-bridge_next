@@ -1,7 +1,7 @@
 import { Link, Text } from '@chakra-ui/react';
 import { useChainId } from '@thirdweb-dev/react';
 
-import { etherscan_address } from '@/utils/contrants';
+import { etherscan_address } from '@/utils/constants';
 
 interface EtherScanMessageProps {
   title: string;

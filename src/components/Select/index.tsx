@@ -5,26 +5,26 @@ import { Fragment } from 'react';
 import { ChainType } from '@/type/chain.type';
 
 interface SelectProps {
-  selectedId: number;
+  chainID: number;
   items: ChainType[];
   handleChange: (chain: number) => void;
   title: string;
 }
 export const Select: React.FC<SelectProps> = ({
   title,
-  selectedId,
+  chainID,
   items,
   handleChange,
 }) => {
   return (
     <>
       <div className='w-44 mb-4'>
-        <Listbox value={selectedId} onChange={(value) => handleChange(value)}>
+        <Listbox value={chainID} onChange={(value) => handleChange(value)}>
           <div className='relative mt-1 flex items-center'>
             <span className='text-white mr-2'>{title} </span>{' '}
             <Listbox.Button className='inline-flex items-center rounded-full border border-transparent bg-indigo-700 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2'>
               <span className='block truncate'>
-                {items.filter((item) => item.id === selectedId)[0]?.name}
+                {items.filter((item) => item.id === chainID)[0]?.name}
               </span>
             </Listbox.Button>
             <Transition

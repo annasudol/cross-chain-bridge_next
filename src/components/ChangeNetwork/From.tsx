@@ -15,7 +15,7 @@ const ChangeNetworkFrom: React.FC<{ chainID: number }> = ({ chainID }) => {
     <Select
       title='From'
       items={chains}
-      selectedId={chainID || 5}
+      chainID={chainID}
       handleChange={switchChain}
     />
   );

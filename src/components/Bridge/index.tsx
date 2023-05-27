@@ -17,18 +17,20 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import ChangeNetworkFrom from '@/components/ChangeNetwork/From';
 import NextImage from '@/components/NextImage';
 
-import { token_address } from '@/utils/contrants';
+import { token_address } from '@/utils/constants';
 
 export const Bridge = () => {
   const [sendAmount, setSendAmount] = useState<number>();
   const [balance, setBalance] = useState<number>(0);
   const address = useAddress();
   const chainFromID = useChainId();
-  const [chainToID, setChainToID] = useState<number>(0);
+  const [chainToID, setChainToID] = useState<number>(5);
 
-  const { contract: contractT, isLoading: isLoadingT, error: ErrorT } = useContract(
-    token_address(chainFromID || 5)
-  );
+  const {
+    contract: contractT,
+    isLoading: isLoadingT,
+    error: ErrorT,
+  } = useContract(token_address(chainFromID || 5));
 
   const { data } = useContractRead(contractT, 'balanceOf', address);
   const { data: symbol } = useContractRead(contractT, 'symbol');
@@ -46,10 +48,10 @@ export const Bridge = () => {
     balance && setBalance(Number(utils.formatEther(balance)) || 0);
   }, [data]);
 
-    useEffect(() => {
-    const id= chainFromID && chainFromID === 8001 ? 5 : 8001;
-    setChainToID(id)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const id = chainFromID && chainFromID === 8001 ? 5 : 8001;
+    setChainToID(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chainToID]);
 
   if (isLoadingT) {
@@ -68,7 +70,7 @@ export const Bridge = () => {
 
   return (
     <div className='p-6 flex flex-col'>
-      <ChangeNetworkFrom chainID={chainToID || 5} />
+      <ChangeNetworkFrom chainID={chainFromID || 5} />
       <div className='h-48'>
         {ErrorT ? (
           <Alert status='error' className='rounded-md'>
@@ -109,12 +111,18 @@ export const Bridge = () => {
                 </div>
               </>
             )}
-            <button className='text-white underline p-2 text-sm' onClick={handleMaxOut}>
+            <button
+              className='text-white underline p-2 text-sm'
+              onClick={handleMaxOut}
+            >
               Max {balance.toFixed(2)}
             </button>
           </div>
         )}
-        <span className='text-white pt-4'>To : {chainToID === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}</span>
+        <span className='text-white pt-4'>
+          To :{' '}
+          {chainToID === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}
+        </span>
       </div>
       <button className='self-center mt-2 w-60 items-center justify-items-center rounded-full border border-transparent bg-green-100 px-4 py-2 text-base font-medium text-blue-900 shadow-sm hover:bg-green-200 focus:outline-none '>
         Send
