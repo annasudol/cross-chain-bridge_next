@@ -1,5 +1,5 @@
 import {  useAddress,useContract,
-  useContractRead} from "@thirdweb-dev/react";
+  useContractRead, } from "@thirdweb-dev/react";
 // import { ChangeNetwork } from '@/ui/ChangeNetwork'
 // import { NetworkTab } from '@/ui/NetworkTab'
 // import { TokenInfo } from '@/ui/TokenInfo'
@@ -8,8 +8,10 @@ import {  useAddress,useContract,
 // } from '@/utils/constants'
 // import { Token } from '../../typechain-types'
 import {BigNumber, utils} from 'ethers'
-// import { useSetChain } from '@web3-onboard/react';
+  // import { useSetChain } from '@web3-onboard/react';
 import { ChangeEvent, useEffect, useState } from 'react';
+
+import NextImage from "@/components/NextImage";
 export const Bridge = () => {
   const [sendAmount, setSendAmount] = useState<number>();
   const [balance, setBalance] = useState<number>(0);
@@ -79,8 +81,7 @@ export const Bridge = () => {
   return (
     <div className='flex flex-col justify-center p-6'>
       <div className=' pt-4'>
-        {/* <ChangeNetwork /> */}
-        <div className=''>
+        <div className='relative'>
           <input
             placeholder=''
             className='w-[100%] rounded-md bg-gray-600 bg-opacity-20 px-4 py-3 text-base text-white outline-none'
@@ -90,6 +91,18 @@ export const Bridge = () => {
             max={balance}
             onChange={(e) => handleSend(e)}
           />
+       <div className="w-9 h-9 rounded-full bg-white absolute r-2 right-2 top-2 flex items-center justify-center">
+              <NextImage
+          src={`/icons/${symbol}.svg`}
+          alt={symbol}
+          width={15}
+          height={15}
+        />
+       </div>
+          <div>
+       
+      
+          </div>
                   <button className="text-white underline p-2" onClick={handleMaxOut}>Max {balance.toFixed(2)}</button>
 
           <div className='absolute right-[12%] mt-2'>
