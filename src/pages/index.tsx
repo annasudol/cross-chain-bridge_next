@@ -28,9 +28,9 @@ export default function HomePage() {
 
       <main>
         <section className='bg-white'>
-          <ConnectWallet />
+  
           <div className='layout relative flex min-h-screen flex-col items-center justify-center py-12 text-center'>
-            <Vercel className='text-5xl' />
+                  <ConnectWallet />
             <h1 className='mt-4'>
               Next.js + Tailwind CSS + TypeScript Starter
             </h1>
