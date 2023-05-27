@@ -1,26 +1,38 @@
 import * as React from 'react';
 
-import { Bridge } from '@/components/Bridge';
 import ConnectWallet from '@/components/connectWallet';
-// Before you begin editing, follow all comments with `STARTERCONF`,
-// to customize the default configuration.
-import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
+import { Tabs } from '@/components/tabs';
+
+import { AppConfig } from '@/utils/AppConfig';
 
 
 export default function HomePage() {
   return (
-    <Layout>
+    <div className='home'>
       <Seo />
-
       <main>
-        <section className='bg-white'>
-                    <ConnectWallet />
-<Bridge/>
-          <div className='layout relative flex min-h-screen flex-col items-center justify-center py-12 text-center'>
-          </div>
+        <section className=''>
+          <ConnectWallet />
+       <div className="flex justify-center">
+  
+        <Tabs />{' '}
+      </div>
         </section>
       </main>
-    </Layout>
+        <footer className="fixed inset-x-auto bottom-2 w-full py-4 text-sm text-white flex justify-center">
+          <div className='max-w-xl text-center'>
+            <p>
+            © Copyright {new Date().getFullYear()} {AppConfig.title}
+          </p>
+          <p>
+            Made by{' '}
+            <a href="https://github.com/annasudol" className="text-white">
+              Anna Sudol
+            </a>
+          </p>
+          </div>
+        </footer>
+    </div>
   );
 }
