@@ -25,12 +25,12 @@ export const Bridge = () => {
   const address = useAddress();
   const chainID = useChainId();
 
-  const { contract, isLoading, error } = useContract(
+  const { contract: contractT, isLoading: isLoadingT, error: ErrorT } = useContract(
     token_address(chainID || 5)
   );
 
-  const { data } = useContractRead(contract, 'balanceOf', address);
-  const { data: symbol } = useContractRead(contract, 'symbol');
+  const { data } = useContractRead(contractT, 'balanceOf', address);
+  const { data: symbol } = useContractRead(contractT, 'symbol');
 
   function handleMaxOut(): void {
     setSendAmount(balance);
@@ -45,7 +45,7 @@ export const Bridge = () => {
     balance && setBalance(Number(utils.formatEther(balance)) || 0);
   }, [data]);
 
-  if (isLoading) {
+  if (isLoadingT) {
     return (
       <div className='flex justify-center items-center h-full'>
         <Spinner
@@ -63,7 +63,7 @@ export const Bridge = () => {
     <div className='p-6 flex flex-col'>
       <ChangeNetworkFrom chainID={chainID || 5} />
       <div className='h-48'>
-        {error ? (
+        {ErrorT ? (
           <Alert status='error' className='rounded-md'>
             <AlertIcon />
             <AlertTitle>Error</AlertTitle>
