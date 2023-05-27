@@ -73,7 +73,7 @@ export const Bridge = () => {
           <div className='relative'>
             <input
               placeholder=''
-              className='w-[100%] rounded-md bg-gray-600 bg-opacity-20 px-4 py-3 text-base text-white outline-none'
+              className='w-[100%] rounded-md bg-gray-100 bg-opacity-5 px-4 py-3 text-base text-white outline-non border-white border-opacity-10'
               type='number'
               pattern='^-?[0-9]\d*\.?\d*$'
               value={sendAmount}
