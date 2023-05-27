@@ -30,7 +30,7 @@ const Dropdown: FC<DropdownProps> = ({
             {label}
             <ChevronDownIcon
               className={clsx(
-                { "-mr-1 ml-2 h-5 w-5 transition text-blue-gray-900": label },
+                "-mr-1 ml-2 h-5 w-5 transition text-white",
                 {
                   "rotate-180": open,
                 }

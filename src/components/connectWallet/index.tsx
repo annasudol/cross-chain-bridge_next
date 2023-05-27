@@ -1,8 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
-// import AlertDialog from "@components/AlertDialog";
-// import Dropdown from "@components/Dropdown";
-// import { truncateEthAddress } from "@/util/helpers";
-// import ModalService from "@util/modalService";
+
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { ethers } from "ethers";
 import Image from "next/image";
@@ -49,9 +45,8 @@ export default function ConnectWallet() {
   }, [wallet]);
 
   const currentChain = chains.find((c) => c.id === connectedChain?.id);
-  console.log(currentChain)
   return wallet?.provider ? (
-    <div className="h-10 flex border-gray-300 border rounded py-1 pl-3 pr-2 bg-white gap-3">
+    <div className="h-10 flex justify-between border-white border rounded-full py-1 pl-4 pr-4 bg-blue-900/20 max-w-[230px]">
       {wallet?.accounts[0].ens && (
         <Image
           src={wallet?.accounts[0].ens.avatar as unknown as string}
@@ -62,12 +57,13 @@ export default function ConnectWallet() {
         <Image
           src={`/icons/${currentChain?.token}.svg`}
           alt={currentChain?.token || ""}
-          width={15}
-          height={15}
+          className="mr-3"
+          width={25}
+          height={25}
         />
       )}
       <div className="flex flex-col items-start">
-        <div className="text-xs flex gap-2 font-bold text-gray-700">
+        <div className="text-xs flex gap-2 font-bold text-white">
           <p>
             {wallet.accounts[0].balance
               ? parseFloat(
@@ -77,11 +73,10 @@ export default function ConnectWallet() {
             <span>{currentChain?.token}</span>
           </p>
         </div>
-        <div className="text-xs flex gap-2 text-gray-400 dark:text-blue-gray-900">
+        <div className="text-xs flex gap-2 text-gray-200">
           {wallet.accounts[0].address && (
             <div>
-              {truncateEthAddress(wallet.accounts[0].address)} (
-              {currentChain?.label})
+              {truncateEthAddress(wallet.accounts[0].address)}
             </div>
           )}
         </div>
@@ -90,6 +85,7 @@ export default function ConnectWallet() {
         <Image
           src={`/icons/${wallet.label}.svg`}
           alt=""
+          className="ml-4"
           width={20}
           height={20}
         />
@@ -109,7 +105,7 @@ export default function ConnectWallet() {
     <div>
       <button
         type="button"
-        className="h-10 flex border rounded py-1 px-2 bg-blue-gray-50 items-center lg:px-10 dark:text-blue-gray-900"
+        className="h-10 flex border rounded-full py-1 px-4 bg-blue-900/20 items-center lg:px-10 text-white"
         disabled={connecting}
         onClick={async () => {
           await connect();
