@@ -1,4 +1,7 @@
-import { ChangeEvent, useEffect } from 'react';
+import { useSetChain } from '@web3-onboard/react';
+import { ChangeEvent, useEffect, useState } from 'react';
+
+import { TokenInfo } from '@/components/TokenInfo';
 
 // import {
 //   useAccount,
@@ -16,7 +19,8 @@ import { ChangeEvent, useEffect } from 'react';
 // import { Token } from '../../typechain-types'
 
 export const Bridge = () => {
-  // const [sendAmount, setSendAmount] = useState<number>()
+const [sendAmount, setSendAmount] = useState<number>()
+  const [{  connectedChain }] = useSetChain();
   // const [tokenBalance, setTokenBalance] = useState(0)
   // const provider = useProvider()
   // const toast = useToast()
@@ -75,14 +79,14 @@ export const Bridge = () => {
           <input
             placeholder=''
             className='w-[100%] rounded-md bg-gray-600 bg-opacity-20 px-4 py-3 text-base text-white outline-none'
-            type='text'
+            type='number'
             pattern='^-?[0-9]\d*\.?\d*$'
-            // value={sendAmount}
+            value={sendAmount}
             // max={tokenBalance}
             onChange={(e) => handleSend(e)}
           />
           <div className='absolute right-[12%] mt-2'>
-            {/* <TokenInfo chainId={chain?.id} /> */}
+            {connectedChain?.id && <TokenInfo chainId={connectedChain?.id as unknown as number} /> }
           </div>
         </div>
       </div>
