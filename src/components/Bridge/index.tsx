@@ -11,6 +11,7 @@ import {BigNumber, utils} from 'ethers'
   // import { useSetChain } from '@web3-onboard/react';
 import { ChangeEvent, useEffect, useState } from 'react';
 
+import ChangeNetwork from "@/components/ChangeNetwork";
 import NextImage from "@/components/NextImage";
 export const Bridge = () => {
   const [sendAmount, setSendAmount] = useState<number>();
@@ -80,7 +81,8 @@ export const Bridge = () => {
 
   return (
     <div className='flex flex-col justify-center p-6'>
-      <div className=' pt-4'>
+      <div className='pt-4'>
+        <ChangeNetwork />
         <div className='relative'>
           <input
             placeholder=''
