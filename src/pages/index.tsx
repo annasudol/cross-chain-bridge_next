@@ -1,5 +1,9 @@
 import * as React from 'react';
 
+import ConnectWallet from '@/components/connectWallet';
+// !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
+// Before you begin editing, follow all comments with `STARTERCONF`,
+// to customize the default configuration.
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import ButtonLink from '@/components/links/ButtonLink';
@@ -16,10 +20,6 @@ import Seo from '@/components/Seo';
  */
 import Vercel from '~/svg/Vercel.svg';
 
-// !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
-// Before you begin editing, follow all comments with `STARTERCONF`,
-// to customize the default configuration.
-
 export default function HomePage() {
   return (
     <Layout>
@@ -28,6 +28,7 @@ export default function HomePage() {
 
       <main>
         <section className='bg-white'>
+          <ConnectWallet />
           <div className='layout relative flex min-h-screen flex-col items-center justify-center py-12 text-center'>
             <Vercel className='text-5xl' />
             <h1 className='mt-4'>
@@ -35,7 +36,6 @@ export default function HomePage() {
             </h1>
             <p className='mt-2 text-sm text-gray-800'>
               A starter for Next.js, Tailwind CSS, and TypeScript with Absolute
-              Import, Seo, Link component, pre-configured with Husky{' '}
             </p>
             <p className='mt-2 text-sm text-gray-700'>
               <ArrowLink href='https://github.com/theodorusclarence/ts-nextjs-tailwind-starter'>
