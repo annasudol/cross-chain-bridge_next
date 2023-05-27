@@ -1,35 +1,37 @@
-import { useAddress, useContract, useContractRead } from '@thirdweb-dev/react';
-// import { ChangeNetwork } from '@/ui/ChangeNetwork'
-// import { NetworkTab } from '@/ui/NetworkTab'
-// import { TokenInfo } from '@/ui/TokenInfo'
-// import {
-//   token_address,
-// } from '@/utils/constants'
-// import { Token } from '../../typechain-types'
+import { Spinner } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+} from '@chakra-ui/react';
+import {
+  useAddress,
+  useChainId,
+  useContract,
+  useContractRead,
+} from '@thirdweb-dev/react';
 import { BigNumber, utils } from 'ethers';
-// import { useSetChain } from '@web3-onboard/react';
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import ChangeNetwork from '@/components/ChangeNetwork';
+import ChangeNetworkFrom from '@/components/ChangeNetwork/From';
 import NextImage from '@/components/NextImage';
+
+import { token_address } from '@/utils/contrants';
+
 export const Bridge = () => {
   const [sendAmount, setSendAmount] = useState<number>();
   const [balance, setBalance] = useState<number>(0);
   const address = useAddress();
+  const chainID = useChainId();
 
-  // const [{ connectedChain }] = useSetChain();
-  // const [tokenBalance, setTokenBalance] = useState(0)
   const { contract, isLoading, error } = useContract(
-    '0xf121DaF9eDdF06F3f7DD56952F6BFd000BFffA61'
+    token_address(chainID || 5)
   );
+
   const { data } = useContractRead(contract, 'balanceOf', address);
   const { data: symbol } = useContractRead(contract, 'symbol');
 
-  // const toast = useToast()
-  // const { address } = useAccount()
-  // const { chain } = useNetwork()
-
-  // function handleBridgeSendSearchChain(): void {}
   function handleMaxOut(): void {
     setSendAmount(balance);
   }
@@ -41,94 +43,75 @@ export const Bridge = () => {
   useEffect(() => {
     const balance = data?._hex && BigNumber.from(data?._hex);
     balance && setBalance(Number(utils.formatEther(balance)) || 0);
-    //     async function fetchContractGreeting() {
-    //       if (connectedChain) {
-    //         const contract = new ethers.Contract(
-    //           token_address(5) as string,
-    //           TokenContract,
-    //         )
-
-    //         console.log(contract, "contract")
-    // // eslint-disable-next-line no-console
-
-    //         try {
-    //           const balanceBN = await contract.balanceOf()
-    //                  console.log(balanceBN, "balanceBN?.id")
-
-    //           // const balance = ethers.utils.formatUnits(balanceBN)
-    //           // setTokenBalance(Number(balance))
-    //         } catch (err) {
-    //           // eslint-disable-next-line no-console
-    //           console.log('Error: ', err)
-    //         }
-    //       }
-    //     }
-    //     fetchContractGreeting()
   }, [data]);
-  // const { config } = usePrepareContractWrite({
-  //   address: BRIDGE_ETH_ADDRESS,
-  //   abi: BridgeContract.abi,
-  //   functionName: 'swap',
-  //   args: [
-  //     '0x80dD5aD6B8775c4E31C999cA278Ef4D035717872',
-  //     1,
-  //     0,
-  //     chain?.id,
-  //     chain?.id === 5 ? 'gETH' : 'mETH',
-  //   ],
-  //   enabled: Boolean(chain?.id && provider),
-  // })
+
+  if (isLoading) {
+    return (
+      <div className='flex justify-center items-center h-full'>
+        <Spinner
+          thickness='4px'
+          speed='0.65s'
+          emptyColor='gray.200'
+          color='blue.500'
+          size='xl'
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className='flex flex-col justify-center p-6'>
-      <div className='pt-4'>
-        <ChangeNetwork />
-        <div className='relative'>
-          <input
-            placeholder=''
-            className='w-[100%] rounded-md bg-gray-600 bg-opacity-20 px-4 py-3 text-base text-white outline-none'
-            type='number'
-            pattern='^-?[0-9]\d*\.?\d*$'
-            value={sendAmount}
-            max={balance}
-            onChange={(e) => handleSend(e)}
-          />
-          <div className='w-9 h-9 rounded-full bg-white absolute r-2 right-2 top-2 flex items-center justify-center'>
-            <NextImage
-              src={`/icons/${symbol}.svg`}
-              alt={symbol}
-              width={15}
-              height={15}
+    <div className='p-6 flex flex-col'>
+      <ChangeNetworkFrom chainID={chainID || 5} />
+      <div className='h-48'>
+        {error ? (
+          <Alert status='error' className='rounded-md'>
+            <AlertIcon />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>Error with importing contract</AlertDescription>
+          </Alert>
+        ) : (
+          <div className='relative'>
+            <input
+              placeholder=''
+              className='w-[100%] rounded-md bg-gray-600 bg-opacity-20 px-4 py-3 text-base text-white outline-none'
+              type='number'
+              pattern='^-?[0-9]\d*\.?\d*$'
+              value={sendAmount}
+              max={balance}
+              onChange={(e) => handleSend(e)}
             />
+            {symbol && (
+              <>
+                <span className='text-white absolute right-12 top-3'>
+                  {symbol}
+                </span>
+                <div className='w-9 h-9 rounded-full bg-white absolute right-2 top-2 flex items-center justify-center'>
+                  <NextImage
+                    src='/icons/eETH.svg'
+                    alt='symbol'
+                    width={15}
+                    height={15}
+                  />
+                  <div className='w-6 h-6 absolute bottom-0 -right-1'>
+                    <NextImage
+                      src={`/icons/${symbol}.svg`}
+                      layout='fill'
+                      alt={symbol}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+            <button className='text-white underline p-2 text-sm' onClick={handleMaxOut}>
+              Max {balance.toFixed(2)}
+            </button>
           </div>
-          <div></div>
-          <button className='text-white underline p-2' onClick={handleMaxOut}>
-            Max {balance.toFixed(2)}
-          </button>
-
-          <div className='absolute right-[12%] mt-2'>
-            {/* {connectedChain?.id && (
-              <TokenInfo chainId={connectedChain?.id as unknown as number} />
-            )} */}
-          </div>
-        </div>
+        )}
+        <span className='text-white pt-4'>To : {chainID === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}</span>
       </div>
-      <div className='flex flex-row justify-between pl-4 pr-12'>
-        {/* <NetworkTab /> */}
-        <div className='text-base text-gray-200'>
-          <button onClick={handleMaxOut}>
-            <p className='underline underline-offset-1'>
-              {/* Max: {tokenBalance.toFixed(2)} */}
-            </p>
-          </button>
-        </div>
-      </div>
-      <button className='mt-2 w-60 items-center justify-items-center rounded-full border border-transparent bg-green-100 px-4 py-2 text-base font-medium text-blue-900 shadow-sm hover:bg-green-200 focus:outline-none'>
+      <button className='self-center mt-2 w-60 items-center justify-items-center rounded-full border border-transparent bg-green-100 px-4 py-2 text-base font-medium text-blue-900 shadow-sm hover:bg-green-200 focus:outline-none '>
         Send
       </button>
     </div>
   );
 };
-// function fetchContractGreeting(): import("react").DependencyList | undefined {
-//   throw new Error("Function not implemented.");
-// }
