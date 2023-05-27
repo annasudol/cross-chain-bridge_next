@@ -37,8 +37,8 @@ export default function ComponentsPage() {
   return (
     <Layout>
       <Seo
-        templateTitle='Components'
-        description='Pre-built components with awesome default'
+        templateTitle='Crypto Bridge'
+        description=''
       />
 
       <main>
