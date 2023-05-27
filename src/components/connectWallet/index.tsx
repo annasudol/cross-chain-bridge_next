@@ -1,12 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 // import AlertDialog from "@components/AlertDialog";
 // import Dropdown from "@components/Dropdown";
-// import { truncateEthAddress } from "@util/helpers";
+// import { truncateEthAddress } from "@/util/helpers";
 // import ModalService from "@util/modalService";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { ethers } from "ethers";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+
+import Dropdown from "@/components/dropdown";
+
+import { truncateEthAddress } from "@/utils/helpers";
 const availableWallets = ["MetaMask", "Coinbase Wallet", "Brave Wallet"];
 const availableChains = ["BNB", "ARB-ETH", "FTM", "MATIC", "ETH", "OETH"];
 
@@ -75,8 +79,7 @@ export default function ConnectWallet() {
         <div className="text-xs flex gap-2 text-gray-400 dark:text-blue-gray-900">
           {wallet.accounts[0].address && (
             <div>
-              {wallet.accounts[0].address}
-              {/* {truncateEthAddress(wallet.accounts[0].address)} ( */}
+              {truncateEthAddress(wallet.accounts[0].address)} (
               {currentChain?.label})
             </div>
           )}
@@ -90,8 +93,7 @@ export default function ConnectWallet() {
           height={20}
         />
       )}
-      {/* <Dropdown
-        variant="white"
+      <Dropdown
         disabled={false}
         classes="w-5 h-8 flex items-center py-4"
         items={[
@@ -100,7 +102,7 @@ export default function ConnectWallet() {
             onClick: () => disconnect({ label: wallet.label }),
           },
         ]}
-      ></Dropdown> */}
+      ></Dropdown>
     </div>
   ) : (
     <div>
