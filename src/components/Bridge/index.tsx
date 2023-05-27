@@ -1,5 +1,4 @@
-import {  useAddress,useContract,
-  useContractRead, } from "@thirdweb-dev/react";
+import { useAddress, useContract, useContractRead } from '@thirdweb-dev/react';
 // import { ChangeNetwork } from '@/ui/ChangeNetwork'
 // import { NetworkTab } from '@/ui/NetworkTab'
 // import { TokenInfo } from '@/ui/TokenInfo'
@@ -7,23 +6,24 @@ import {  useAddress,useContract,
 //   token_address,
 // } from '@/utils/constants'
 // import { Token } from '../../typechain-types'
-import {BigNumber, utils} from 'ethers'
-  // import { useSetChain } from '@web3-onboard/react';
+import { BigNumber, utils } from 'ethers';
+// import { useSetChain } from '@web3-onboard/react';
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import ChangeNetwork from "@/components/ChangeNetwork";
-import NextImage from "@/components/NextImage";
+import ChangeNetwork from '@/components/ChangeNetwork';
+import NextImage from '@/components/NextImage';
 export const Bridge = () => {
   const [sendAmount, setSendAmount] = useState<number>();
   const [balance, setBalance] = useState<number>(0);
   const address = useAddress();
 
-
   // const [{ connectedChain }] = useSetChain();
   // const [tokenBalance, setTokenBalance] = useState(0)
-  const { contract, isLoading, error } = useContract('0xf121DaF9eDdF06F3f7DD56952F6BFd000BFffA61');
-  const { data} = useContractRead(contract, "balanceOf", address);
-  const { data: symbol} = useContractRead(contract, "symbol");
+  const { contract, isLoading, error } = useContract(
+    '0xf121DaF9eDdF06F3f7DD56952F6BFd000BFffA61'
+  );
+  const { data } = useContractRead(contract, 'balanceOf', address);
+  const { data: symbol } = useContractRead(contract, 'symbol');
 
   // const toast = useToast()
   // const { address } = useAccount()
@@ -31,7 +31,7 @@ export const Bridge = () => {
 
   // function handleBridgeSendSearchChain(): void {}
   function handleMaxOut(): void {
-    setSendAmount(balance)
+    setSendAmount(balance);
   }
   function handleSend(e: ChangeEvent<HTMLInputElement>): void {
     //   const value = e.target.value.replace(/\+|-/gi, '')
@@ -40,31 +40,31 @@ export const Bridge = () => {
   }
   useEffect(() => {
     const balance = data?._hex && BigNumber.from(data?._hex);
-    balance && setBalance(Number(utils.formatEther(balance)) || 0)
-//     async function fetchContractGreeting() {
-//       if (connectedChain) {
-//         const contract = new ethers.Contract(
-//           token_address(5) as string,
-//           TokenContract,
-//         )
+    balance && setBalance(Number(utils.formatEther(balance)) || 0);
+    //     async function fetchContractGreeting() {
+    //       if (connectedChain) {
+    //         const contract = new ethers.Contract(
+    //           token_address(5) as string,
+    //           TokenContract,
+    //         )
 
-//         console.log(contract, "contract")
-// // eslint-disable-next-line no-console
-        
-//         try {
-//           const balanceBN = await contract.balanceOf()
-//                  console.log(balanceBN, "balanceBN?.id")
+    //         console.log(contract, "contract")
+    // // eslint-disable-next-line no-console
 
-//           // const balance = ethers.utils.formatUnits(balanceBN)
-//           // setTokenBalance(Number(balance))
-//         } catch (err) {
-//           // eslint-disable-next-line no-console
-//           console.log('Error: ', err)
-//         }
-//       }
-//     }
-//     fetchContractGreeting()
-  }, [data])
+    //         try {
+    //           const balanceBN = await contract.balanceOf()
+    //                  console.log(balanceBN, "balanceBN?.id")
+
+    //           // const balance = ethers.utils.formatUnits(balanceBN)
+    //           // setTokenBalance(Number(balance))
+    //         } catch (err) {
+    //           // eslint-disable-next-line no-console
+    //           console.log('Error: ', err)
+    //         }
+    //       }
+    //     }
+    //     fetchContractGreeting()
+  }, [data]);
   // const { config } = usePrepareContractWrite({
   //   address: BRIDGE_ETH_ADDRESS,
   //   abi: BridgeContract.abi,
@@ -93,19 +93,18 @@ export const Bridge = () => {
             max={balance}
             onChange={(e) => handleSend(e)}
           />
-       <div className="w-9 h-9 rounded-full bg-white absolute r-2 right-2 top-2 flex items-center justify-center">
-              <NextImage
-          src={`/icons/${symbol}.svg`}
-          alt={symbol}
-          width={15}
-          height={15}
-        />
-       </div>
-          <div>
-       
-      
+          <div className='w-9 h-9 rounded-full bg-white absolute r-2 right-2 top-2 flex items-center justify-center'>
+            <NextImage
+              src={`/icons/${symbol}.svg`}
+              alt={symbol}
+              width={15}
+              height={15}
+            />
           </div>
-                  <button className="text-white underline p-2" onClick={handleMaxOut}>Max {balance.toFixed(2)}</button>
+          <div></div>
+          <button className='text-white underline p-2' onClick={handleMaxOut}>
+            Max {balance.toFixed(2)}
+          </button>
 
           <div className='absolute right-[12%] mt-2'>
             {/* {connectedChain?.id && (
@@ -133,4 +132,3 @@ export const Bridge = () => {
 // function fetchContractGreeting(): import("react").DependencyList | undefined {
 //   throw new Error("Function not implemented.");
 // }
-

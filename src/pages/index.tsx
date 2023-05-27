@@ -1,8 +1,8 @@
-import { ConnectWallet } from "@thirdweb-dev/react";
+import { ConnectWallet } from '@thirdweb-dev/react';
 import * as React from 'react';
 
 import Seo from '@/components/Seo';
-import { Tabs } from "@/components/tabs";
+import { Tabs } from '@/components/tabs';
 
 import { AppConfig } from '@/utils/AppConfig';
 

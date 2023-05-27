@@ -1,19 +1,17 @@
-import { Link, Text } from '@chakra-ui/react'
-import { useChainId } from "@thirdweb-dev/react";
+import { Link, Text } from '@chakra-ui/react';
+import { useChainId } from '@thirdweb-dev/react';
 
 import { etherscan_address } from '@/utils/contrants';
 
-
 interface EtherScanMessageProps {
-  title: string
-  blockHash: string
+  title: string;
+  blockHash: string;
 }
 export const EtherScanMessage: React.FC<EtherScanMessageProps> = ({
   title,
   blockHash,
 }) => {
   const chain = useChainId();
-
 
   return (
     <>
@@ -24,5 +22,5 @@ export const EtherScanMessage: React.FC<EtherScanMessageProps> = ({
         </Link>
       </Text>
     </>
-  )
-}
+  );
+};
