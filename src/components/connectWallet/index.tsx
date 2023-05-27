@@ -48,7 +48,7 @@ export default function ConnectWallet() {
   }, [wallet]);
 
   const currentChain = chains.find((c) => c.id === connectedChain?.id);
-
+  console.log(currentChain)
   return wallet?.provider ? (
     <div className="h-10 flex border-gray-300 border rounded py-1 pl-3 pr-2 bg-white gap-3">
       {wallet?.accounts[0].ens && (
