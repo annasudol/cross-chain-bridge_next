@@ -23,10 +23,11 @@ export const Bridge = () => {
   const [sendAmount, setSendAmount] = useState<number>();
   const [balance, setBalance] = useState<number>(0);
   const address = useAddress();
-  const chainID = useChainId();
+  const chainFromID = useChainId();
+  const [chainToID, setChainToID] = useState<number>(0);
 
   const { contract: contractT, isLoading: isLoadingT, error: ErrorT } = useContract(
-    token_address(chainID || 5)
+    token_address(chainFromID || 5)
   );
 
   const { data } = useContractRead(contractT, 'balanceOf', address);
@@ -45,6 +46,12 @@ export const Bridge = () => {
     balance && setBalance(Number(utils.formatEther(balance)) || 0);
   }, [data]);
 
+    useEffect(() => {
+    const id= chainFromID && chainFromID === 8001 ? 5 : 8001;
+    setChainToID(id)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainToID]);
+
   if (isLoadingT) {
     return (
       <div className='flex justify-center items-center h-full'>
@@ -61,7 +68,7 @@ export const Bridge = () => {
 
   return (
     <div className='p-6 flex flex-col'>
-      <ChangeNetworkFrom chainID={chainID || 5} />
+      <ChangeNetworkFrom chainID={chainToID || 5} />
       <div className='h-48'>
         {ErrorT ? (
           <Alert status='error' className='rounded-md'>
@@ -107,7 +114,7 @@ export const Bridge = () => {
             </button>
           </div>
         )}
-        <span className='text-white pt-4'>To : {chainID === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}</span>
+        <span className='text-white pt-4'>To : {chainToID === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}</span>
       </div>
       <button className='self-center mt-2 w-60 items-center justify-items-center rounded-full border border-transparent bg-green-100 px-4 py-2 text-base font-medium text-blue-900 shadow-sm hover:bg-green-200 focus:outline-none '>
         Send
