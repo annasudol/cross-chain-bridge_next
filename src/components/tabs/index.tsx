@@ -1,6 +1,5 @@
 import { Tab } from '@headlessui/react';
 import clsx from 'clsx';
-import { useState } from 'react';
 
 import { Bridge } from '@/components/Bridge';
 
@@ -11,12 +10,12 @@ import { Bridge } from '@/components/Bridge';
 export const Tabs = () => {
   // const { chain } = useNetwork();
   // const chainId = chain?.id || 5;
-  const [contract, setContract] = useState();
+  // const [contract, setContract] = useState();
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const contractValues = async () => {};
+  // const contractValues = async () => {};
 
-  contractValues();
+  // contractValues();
 
   const categories = ['Bridge', 'Redeem'];
   return (

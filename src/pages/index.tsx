@@ -1,16 +1,21 @@
+import { ConnectWallet } from "@thirdweb-dev/react";
+import { useAddress } from "@thirdweb-dev/react";
 import * as React from 'react';
 
-import ConnectWallet from '@/components/connectWallet';
+// import ConnectWallet from '@/components/connectWallet';
 import Seo from '@/components/Seo';
-import { Tabs } from '@/components/tabs';
+import { Tabs } from "@/components/tabs";
 
 import { AppConfig } from '@/utils/AppConfig';
 
 export default function HomePage() {
+    const address = useAddress();
+
   return (
     <div className='home'>
       <Seo />
       <main>
+        {address}
         <section className='max-w-lg mx-auto p-4'>
           <ConnectWallet />
           <div className='flex justify-center'>
