@@ -56,9 +56,9 @@ init({
   wallets: [injected, gnosis],
   chains: parsedChains,
   appMetadata: {
-    name: 'NFT Governor',
-    icon: '<svg>NFT Governor</svg>',
-    description: 'NFT Governor',
+    name: 'Cross Bridge',
+    icon: '<svg>Cross Bridge</svg>',
+    description: 'Cross Bridge',
     recommendedInjectedWallets: [
       { name: 'MetaMask', url: 'https://metamask.io' },
     ],
