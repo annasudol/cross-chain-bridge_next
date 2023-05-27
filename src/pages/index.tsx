@@ -6,33 +6,31 @@ import { Tabs } from '@/components/tabs';
 
 import { AppConfig } from '@/utils/AppConfig';
 
-
 export default function HomePage() {
   return (
     <div className='home'>
       <Seo />
       <main>
-        <section className=''>
+        <section className='max-w-lg mx-auto p-4'>
           <ConnectWallet />
-       <div className="flex justify-center">
-  
-        <Tabs />{' '}
-      </div>
+          <div className='flex justify-center'>
+            <Tabs />
+          </div>
         </section>
       </main>
-        <footer className="fixed inset-x-auto bottom-2 w-full py-4 text-sm text-white flex justify-center">
-          <div className='max-w-xl text-center'>
-            <p>
+      <footer className='fixed inset-x-auto bottom-2 w-full py-4 text-sm text-white flex justify-center'>
+        <div className='max-w-xl text-center'>
+          <p>
             © Copyright {new Date().getFullYear()} {AppConfig.title}
           </p>
           <p>
             Made by{' '}
-            <a href="https://github.com/annasudol" className="text-white">
+            <a href='https://github.com/annasudol' className='text-white'>
               Anna Sudol
             </a>
           </p>
-          </div>
-        </footer>
+        </div>
+      </footer>
     </div>
   );
 }

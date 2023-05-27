@@ -1,8 +1,8 @@
-import { Tab } from '@headlessui/react'
-import clsx from 'clsx'
-import { useState } from 'react'
+import { Tab } from '@headlessui/react';
+import clsx from 'clsx';
+import { useState } from 'react';
 
-import { Bridge } from '@/components/Bridge'
+import { Bridge } from '@/components/Bridge';
 
 // import { useBridgeContract, useTokenContract } from '@/hooks/useContract';
 // import { Bridge } from '../Bridge'
@@ -11,18 +11,18 @@ import { Bridge } from '@/components/Bridge'
 export const Tabs = () => {
   // const { chain } = useNetwork();
   // const chainId = chain?.id || 5;
-  const [contract, setContract] = useState()
+  const [contract, setContract] = useState();
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const contractValues = async () => {}
+  const contractValues = async () => {};
 
-  contractValues()
+  contractValues();
 
-  const categories = ['Bridge', 'Redeem']
+  const categories = ['Bridge', 'Redeem'];
   return (
-    <div className="mt-16 w-full max-w-xl py-16 sm:px-0">
+    <div className='mt-16 w-full max-w-xl py-16 sm:px-0'>
       <Tab.Group>
-        <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
+        <Tab.List className='flex space-x-1 rounded-xl bg-blue-900/20 p-1'>
           {categories.map((category) => (
             <Tab
               key={category}
@@ -37,7 +37,7 @@ export const Tabs = () => {
             </Tab>
           ))}
         </Tab.List>
-        <Tab.Panels className="mt-2">
+        <Tab.Panels className='mt-2'>
           {categories.map((_cat, idx) => (
             <Tab.Panel
               key={idx}
@@ -52,5 +52,5 @@ export const Tabs = () => {
         </Tab.Panels>
       </Tab.Group>
     </div>
-  )
-}
+  );
+};

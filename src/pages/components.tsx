@@ -36,10 +36,7 @@ export default function ComponentsPage() {
 
   return (
     <Layout>
-      <Seo
-        templateTitle='Crypto Bridge'
-        description=''
-      />
+      <Seo templateTitle='Crypto Bridge' description='' />
 
       <main>
         <section

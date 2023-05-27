@@ -1,11 +1,11 @@
-import { Chain, defaultChains } from "@thirdweb-dev/chains";
-import { ThirdwebSDKProvider } from "@thirdweb-dev/react";
-import coinbaseModule from "@web3-onboard/coinbase";
-import gas from "@web3-onboard/gas";
-import gnosisModule from "@web3-onboard/gnosis";
-import injectedModule from "@web3-onboard/injected-wallets";
-import { init } from "@web3-onboard/react";
-import React, { PropsWithChildren, useState } from "react";
+import { Chain, defaultChains } from '@thirdweb-dev/chains';
+import { ThirdwebSDKProvider } from '@thirdweb-dev/react';
+import coinbaseModule from '@web3-onboard/coinbase';
+import gas from '@web3-onboard/gas';
+import gnosisModule from '@web3-onboard/gnosis';
+import injectedModule from '@web3-onboard/injected-wallets';
+import { init } from '@web3-onboard/react';
+import React, { PropsWithChildren, useState } from 'react';
 
 type ParsedChain = {
   id: number;
@@ -14,8 +14,6 @@ type ParsedChain = {
   rpcUrl: string;
   blockExplorerUrl: string | undefined;
 };
-
-
 
 const injected = injectedModule();
 const coinbase = coinbaseModule();
@@ -35,19 +33,15 @@ export const parsedChains = JSON.parse(JSON.stringify(wchains));
 // const trezor = trezorModule(trezorOptions);
 
 init({
-  wallets: [
-    injected,
-    coinbase,
-    gnosis,
-  ],
+  wallets: [injected, coinbase, gnosis],
   chains: parsedChains,
   appMetadata: {
-    name: "NFT Governor",
-    icon: "<svg>NFT Governor</svg>",
-    description: "NFT Governor",
+    name: 'NFT Governor',
+    icon: '<svg>NFT Governor</svg>',
+    description: 'NFT Governor',
     recommendedInjectedWallets: [
-      { name: "Coinbase", url: "https://wallet.coinbase.com/" },
-      { name: "MetaMask", url: "https://metamask.io" },
+      { name: 'Coinbase', url: 'https://wallet.coinbase.com/' },
+      { name: 'MetaMask', url: 'https://metamask.io' },
     ],
     /*
     agreement: {
@@ -64,7 +58,7 @@ init({
       enabled: false,
     },
     desktop: {
-      position: "topRight",
+      position: 'topRight',
       enabled: false,
       minimal: false,
     },
@@ -74,9 +68,9 @@ init({
 // subscribe to a single chain for estimates using the default poll rate of 5 secs
 // API key is optional and if provided allows for faster poll rates
 export const ethMainnetGasBlockPrices = gas.stream({
-  chains: ["0x1"],
+  chains: ['0x1'],
   // apiKey: dappId,
-  endpoint: "blockPrices",
+  endpoint: 'blockPrices',
 });
 
 /**
@@ -98,10 +92,6 @@ const CustomWeb3Provider: React.FC<PropsWithChildren> = (props) => {
     undefined
   );
 
-
-
-
-
   // const ethersProvider: ethers.providers.Web3Provider =
   //   ethers.getDefaultProvider() as ethers.providers.Web3Provider;
   let etherSigner;
@@ -111,11 +101,10 @@ const CustomWeb3Provider: React.FC<PropsWithChildren> = (props) => {
   //   etherSigner = ethersProvider.getSigner();
   // }
 
-return(
+  return (
     <ThirdwebSDKProvider
       signer={etherSigner}
-
-      {...((infuraApiKey || alchemyApiKey) && { thirdwebApiKey: "" })}
+      {...((infuraApiKey || alchemyApiKey) && { thirdwebApiKey: '' })}
       {...(thirdwebApiKey && { thirdwebApiKey: thirdwebApiKey })}
       {...(infuraApiKey && { infuraApiKey: infuraApiKey })}
       {...(alchemyApiKey && { alchemyApiKey: alchemyApiKey })}

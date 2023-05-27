@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect } from 'react'
+import { ChangeEvent, useEffect } from 'react';
 
 // import {
 //   useAccount,
@@ -28,9 +28,9 @@ export const Bridge = () => {
     // setSendAmount(tokenBalance)
   }
   function handleSend(e: ChangeEvent<HTMLInputElement>): void {
-  //   const value = e.target.value.replace(/\+|-/gi, '')
-  //   const value_num = Number(value)
-  //   value_num > 0 && value_num <= tokenBalance && setSendAmount(value_num)
+    //   const value = e.target.value.replace(/\+|-/gi, '')
+    //   const value_num = Number(value)
+    //   value_num > 0 && value_num <= tokenBalance && setSendAmount(value_num)
   }
   useEffect(() => {
     // async function fetchContractGreeting() {
@@ -51,7 +51,7 @@ export const Bridge = () => {
     //   }
     // }
     // fetchContractGreeting()
-  }, [])
+  }, []);
 
   // const { config } = usePrepareContractWrite({
   //   address: BRIDGE_ETH_ADDRESS,
@@ -68,37 +68,37 @@ export const Bridge = () => {
   // })
 
   return (
-    <div className="flex flex-col justify-center p-6">
-      <div className=" pt-4">
+    <div className='flex flex-col justify-center p-6'>
+      <div className=' pt-4'>
         {/* <ChangeNetwork /> */}
-        <div className="flex flex-row p-2">
+        <div className='flex flex-row p-2'>
           <input
-            placeholder=""
-            className="w-[100%] rounded-md bg-gray-600 bg-opacity-20 px-4 py-3 text-base text-white outline-none"
-            type="text"
-            pattern="^-?[0-9]\d*\.?\d*$"
+            placeholder=''
+            className='w-[100%] rounded-md bg-gray-600 bg-opacity-20 px-4 py-3 text-base text-white outline-none'
+            type='text'
+            pattern='^-?[0-9]\d*\.?\d*$'
             // value={sendAmount}
             // max={tokenBalance}
             onChange={(e) => handleSend(e)}
           />
-          <div className="absolute right-[12%] mt-2">
+          <div className='absolute right-[12%] mt-2'>
             {/* <TokenInfo chainId={chain?.id} /> */}
           </div>
         </div>
       </div>
-      <div className="flex flex-row justify-between pl-4 pr-12">
+      <div className='flex flex-row justify-between pl-4 pr-12'>
         {/* <NetworkTab /> */}
-        <div className="text-base text-gray-200">
+        <div className='text-base text-gray-200'>
           <button onClick={handleMaxOut}>
-            <p className="underline underline-offset-1">
+            <p className='underline underline-offset-1'>
               {/* Max: {tokenBalance.toFixed(2)} */}
             </p>
           </button>
         </div>
       </div>
-      <button className="mt-2 w-60 items-center justify-items-center rounded-full border border-transparent bg-green-100 px-4 py-2 text-base font-medium text-blue-900 shadow-sm hover:bg-green-200 focus:outline-none">
+      <button className='mt-2 w-60 items-center justify-items-center rounded-full border border-transparent bg-green-100 px-4 py-2 text-base font-medium text-blue-900 shadow-sm hover:bg-green-200 focus:outline-none'>
         Send
       </button>
     </div>
-  )
-}
+  );
+};

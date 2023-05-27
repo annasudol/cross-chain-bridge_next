@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 
 const defaultMeta = {
   title: 'Cross chain bridge',
-  siteName: 'Crypto Bridge - Polygon Mumbai | BNB Smart Chain | Goerli Ethereum',
-  description:
-    'Crypto bridge created to learning purposes',
+  siteName:
+    'Crypto Bridge - Polygon Mumbai | BNB Smart Chain | Goerli Ethereum',
+  description: 'Crypto bridge created to learning purposes',
   url: '',
   type: 'website',
   robots: 'follow, index',
@@ -40,7 +40,7 @@ export default function Seo(props: SeoProps) {
       <meta property='og:title' content={meta.title} />
       <meta name='image' property='og:image' content={meta.image} />
       <meta name='twitter:card' content='summary_large_image' />
-  
+
       <meta name='twitter:title' content={meta.title} />
       <meta name='twitter:description' content={meta.description} />
       <meta name='twitter:image' content={meta.image} />
@@ -52,11 +52,7 @@ export default function Seo(props: SeoProps) {
             property='og:publish_date'
             content={meta.date}
           />
-          <meta
-            name='author'
-            property='article:author'
-            content='Anna Sudol'
-          />
+          <meta name='author' property='article:author' content='Anna Sudol' />
         </>
       )}
 
