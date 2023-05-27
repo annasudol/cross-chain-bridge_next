@@ -1,12 +1,10 @@
-import { Chain, defaultChains } from '@thirdweb-dev/chains';
+import { Chain } from '@thirdweb-dev/chains';
 import { ThirdwebSDKProvider } from '@thirdweb-dev/react';
-import coinbaseModule from '@web3-onboard/coinbase';
 import gas from '@web3-onboard/gas';
 import gnosisModule from '@web3-onboard/gnosis';
 import injectedModule from '@web3-onboard/injected-wallets';
 import { init } from '@web3-onboard/react';
 import React, { PropsWithChildren, useState } from 'react';
-
 type ParsedChain = {
   id: number;
   label: string;
@@ -14,33 +12,54 @@ type ParsedChain = {
   rpcUrl: string;
   blockExplorerUrl: string | undefined;
 };
+const chains: ParsedChain[] = [
+  {
+    blockExplorerUrl: 'https://mumbai.polygonscan.com',
+    id: 80001,
+    label: 'Mumbai',
+    rpcUrl: 'https://mumbai.rpc.thirdweb.com/${THIRDWEB_API_KEY}',
+    token: 'MATIC',
+  },
+  {
+    blockExplorerUrl: 'https://goerli.etherscan.io',
+    id: 5,
+    label: 'Goerli',
+    rpcUrl: 'https://goerli.rpc.thirdweb.com/${THIRDWEB_API_KEY}',
+    token: 'ETH',
+  },
+  {
+    blockExplorerUrl: 'https://testnet.bscscan.com',
+    id: 97,
+    label: 'Binance Smart Chain Testnet',
+    rpcUrl: 'https://binance-testnet.rpc.thirdweb.com/${THIRDWEB_API_KEY}',
+    token: 'tBNB',
+  },
+];
 
 const injected = injectedModule();
-const coinbase = coinbaseModule();
 
 const gnosis = gnosisModule();
 
-const wchains: ParsedChain[] = defaultChains.map((chain: Chain) => ({
-  id: chain.chainId,
-  label: chain.name,
-  token: chain.nativeCurrency.symbol,
-  rpcUrl: chain.rpc[0],
-  blockExplorerUrl: chain.explorers?.find(() => true)?.url,
-}));
+// const wchains: ParsedChain[] = defaultChains.map((chain: Chain) => ({
+//   id: chain.chainId,
+//   label: chain.name,
+//   token: chain.nativeCurrency.symbol,
+//   rpcUrl: chain.rpc[0],
+//   blockExplorerUrl: chain.explorers?.find(() => true)?.url,
+// }));
 
-export const parsedChains = JSON.parse(JSON.stringify(wchains));
+// console.log(wchains, 'wchains');
 
-// const trezor = trezorModule(trezorOptions);
+export const parsedChains = JSON.parse(JSON.stringify(chains));
 
 init({
-  wallets: [injected, coinbase, gnosis],
+  wallets: [injected, gnosis],
   chains: parsedChains,
   appMetadata: {
     name: 'NFT Governor',
     icon: '<svg>NFT Governor</svg>',
     description: 'NFT Governor',
     recommendedInjectedWallets: [
-      { name: 'Coinbase', url: 'https://wallet.coinbase.com/' },
       { name: 'MetaMask', url: 'https://metamask.io' },
     ],
     /*

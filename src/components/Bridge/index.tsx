@@ -19,8 +19,8 @@ import { TokenInfo } from '@/components/TokenInfo';
 // import { Token } from '../../typechain-types'
 
 export const Bridge = () => {
-const [sendAmount, setSendAmount] = useState<number>()
-  const [{  connectedChain }] = useSetChain();
+  const [sendAmount, setSendAmount] = useState<number>();
+  const [{ connectedChain }] = useSetChain();
   // const [tokenBalance, setTokenBalance] = useState(0)
   // const provider = useProvider()
   // const toast = useToast()
@@ -86,7 +86,9 @@ const [sendAmount, setSendAmount] = useState<number>()
             onChange={(e) => handleSend(e)}
           />
           <div className='absolute right-[12%] mt-2'>
-            {connectedChain?.id && <TokenInfo chainId={connectedChain?.id as unknown as number} /> }
+            {connectedChain?.id && (
+              <TokenInfo chainId={connectedChain?.id as unknown as number} />
+            )}
           </div>
         </div>
       </div>
