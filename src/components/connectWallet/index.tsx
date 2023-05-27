@@ -18,6 +18,7 @@ export default function ConnectWallet() {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [{ chains, connectedChain }] = useSetChain();
   const [, setProvider] = useState<ethers.providers.Web3Provider | null>();
+  
   useEffect(() => {
     if (wallet) {
       const currentChain = chains.find((c) => c.id === connectedChain?.id);
