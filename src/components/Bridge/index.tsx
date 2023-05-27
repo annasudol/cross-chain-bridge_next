@@ -12,14 +12,15 @@ import {BigNumber, utils} from 'ethers'
 import { ChangeEvent, useEffect, useState } from 'react';
 export const Bridge = () => {
   const [sendAmount, setSendAmount] = useState<number>();
-  const [balance, setBalance] = useState<number>();
-const address = useAddress();
+  const [balance, setBalance] = useState<number>(0);
+  const address = useAddress();
 
 
   // const [{ connectedChain }] = useSetChain();
   // const [tokenBalance, setTokenBalance] = useState(0)
   const { contract, isLoading, error } = useContract('0xf121DaF9eDdF06F3f7DD56952F6BFd000BFffA61');
   const { data} = useContractRead(contract, "balanceOf", address);
+  const { data: symbol} = useContractRead(contract, "symbol");
 
   // const toast = useToast()
   // const { address } = useAccount()
@@ -27,7 +28,7 @@ const address = useAddress();
 
   // function handleBridgeSendSearchChain(): void {}
   function handleMaxOut(): void {
-    // setSendAmount(tokenBalance)
+    setSendAmount(balance)
   }
   function handleSend(e: ChangeEvent<HTMLInputElement>): void {
     //   const value = e.target.value.replace(/\+|-/gi, '')
@@ -78,18 +79,19 @@ const address = useAddress();
   return (
     <div className='flex flex-col justify-center p-6'>
       <div className=' pt-4'>
-        Balance: {balance}
         {/* <ChangeNetwork /> */}
-        <div className='flex flex-row p-2'>
+        <div className=''>
           <input
             placeholder=''
             className='w-[100%] rounded-md bg-gray-600 bg-opacity-20 px-4 py-3 text-base text-white outline-none'
             type='number'
             pattern='^-?[0-9]\d*\.?\d*$'
             value={sendAmount}
-            // max={tokenBalance}
+            max={balance}
             onChange={(e) => handleSend(e)}
           />
+                  <button className="text-white underline p-2" onClick={handleMaxOut}>Max {balance.toFixed(2)}</button>
+
           <div className='absolute right-[12%] mt-2'>
             {/* {connectedChain?.id && (
               <TokenInfo chainId={connectedChain?.id as unknown as number} />
