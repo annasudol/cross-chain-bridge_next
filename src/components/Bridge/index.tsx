@@ -10,17 +10,19 @@ import {
   useChainId,
   useContract,
   useContractRead,
+  useContractWrite,
 } from '@thirdweb-dev/react';
 import { BigNumber, utils } from 'ethers';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ethers } from "ethers";
+import { useEffect, useState } from 'react';
 
 import ChangeNetworkFrom from '@/components/ChangeNetwork/From';
 import NextImage from '@/components/NextImage';
 
-import { token_address } from '@/utils/constants';
+import { token_address } from '@/utils/contrants';
 
 export const Bridge = () => {
-  const [sendAmount, setSendAmount] = useState<number>();
+  const [sendAmount, setSendAmount] = useState<string>();
   const [balance, setBalance] = useState<number>(0);
   const address = useAddress();
   const chainFromID = useChainId();
@@ -31,6 +33,13 @@ export const Bridge = () => {
     isLoading: isLoadingT,
     error: ErrorT,
   } = useContract(token_address(chainFromID || 5));
+    const {
+    contract: contractB,
+    isLoading: isLoadingB,
+    error: ErrorB,
+  } = useContract('0xA097413a69B55fe1aB8D6F0a4612CdAaA21dc725');
+  const { mutateAsync: facet, isLoading: isLoadingBF } = useContractWrite(contractB, "facet");
+    const { mutateAsync: swap, isLoadingSwap } = useContractWrite(contractB, "swap")
 
   const { data } = useContractRead(contractT, 'balanceOf', address);
   const { data: symbol } = useContractRead(contractT, 'symbol');
@@ -38,10 +47,27 @@ export const Bridge = () => {
   function handleMaxOut(): void {
     setSendAmount(balance);
   }
-  function handleSend(e: ChangeEvent<HTMLInputElement>): void {
-    //   const value = e.target.value.replace(/\+|-/gi, '')
-    //   const value_num = Number(value)
-    //   value_num > 0 && value_num <= tokenBalance && setSendAmount(value_num)
+
+  // const call = async () => {
+  //   try {
+  //     const data = await facet(undefined);
+  //     console.info("contract call successs", data);
+  //   } catch (err) {
+  //     console.error("contract call failure", err);
+  //   }
+  // }
+  
+  async function handleSend(): Promise<void> {
+   const sendAmountInWei = sendAmount && ethers.utils.parseUnits(sendAmount)
+
+
+   try {
+      const data = await swap([address, sendAmountInWei, 0, chainFromID, symbol]);
+      console.info("contract call successs", data);
+    } catch (err) {
+      console.error("contract call failure", err);
+    }
+
   }
   useEffect(() => {
     const balance = data?._hex && BigNumber.from(data?._hex);
@@ -83,11 +109,12 @@ export const Bridge = () => {
             <input
               placeholder=''
               className='w-[100%] rounded-md bg-gray-100 bg-opacity-5 px-4 py-3 text-base text-white outline-non border-white border-opacity-10'
-              type='number'
+              type='text'
               pattern='^-?[0-9]\d*\.?\d*$'
               value={sendAmount}
               max={balance}
-              onChange={(e) => handleSend(e)}
+              min={0.05}
+              onChange={(e) => setSendAmount(e.target.value)}
             />
             {symbol && (
               <>
@@ -124,9 +151,16 @@ export const Bridge = () => {
           {chainToID === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}
         </span>
       </div>
-      <button className='self-center mt-2 w-60 items-center justify-items-center rounded-full border border-transparent bg-green-100 px-4 py-2 text-base font-medium text-blue-900 shadow-sm hover:bg-green-200 focus:outline-none '>
+      <button onClick={handleSend} className='self-center mt-2 w-60 items-center justify-items-center rounded-full border border-transparent bg-green-100 px-4 py-2 text-base font-medium text-blue-900 shadow-sm hover:bg-green-200 focus:outline-none '>
         Send
       </button>
     </div>
   );
 };
+// TOKEN_ETH_ADDRESS='0xf121DaF9eDdF06F3f7DD56952F6BFd000BFffA61'
+// TOKEN_BSC_ADDRESS='0x11E47a0465D3933E372fD4A2854e897934Fd14d7'
+// TOKEN_MATIC_ADDRESS='0xD46B25771dbcd034772D0f2C5dECE94Cd3684435'
+
+// BRIDGE_ETH_ADDRESS='0xA097413a69B55fe1aB8D6F0a4612CdAaA21dc725'
+// BRIDGE_MATIC_ADDRESS='0xa2D60f2A08fF806446b971b19bAa71677c47a415'
+// BRIDGE_BSC_ADDRESS='0xE88702C4B257f30a5929329191ae58A011f35172'

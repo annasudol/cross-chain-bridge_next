@@ -3,20 +3,7 @@ import clsx from 'clsx';
 
 import { Bridge } from '@/components/Bridge';
 
-// import { useBridgeContract, useTokenContract } from '@/hooks/useContract';
-// import { Bridge } from '../Bridge'
-// import { Facet } from '../Facet'
-
 export const Tabs = () => {
-  // const { chain } = useNetwork();
-  // const chainId = chain?.id || 5;
-  // const [contract, setContract] = useState();
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  // const contractValues = async () => {};
-
-  // contractValues();
-
   const categories = ['Bridge', 'Redeem'];
   return (
     <div className='mt-16 w-full max-w-xl py-16 sm:px-0'>
