@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
+import { useToast } from '@chakra-ui/react';
 import {
   useAddress,
-  useChainId,
   useContract,
   useContractWrite,
 } from '@thirdweb-dev/react';
@@ -23,15 +24,19 @@ export const SwapForm: FC<SwapFormProps> = ({
 }) => {
   const [sendAmount, setSendAmount] = useState<string>();
   const address = useAddress();
-  const chainFromID = useChainId();
-  const [chainToID, setChainToID] = useState<number>(5);
+  const [chainToID, setChainToID] = useState<string>();
+  const toast = useToast();
 
   const { contract } = useContract(bridge_address(chainId));
   const { mutateAsync: swap, isLoading } = useContractWrite(contract, 'swap');
-
+// {chainId === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}
   function handleMaxOut(): void {
     setSendAmount(balance.toString());
   }
+
+  useEffect(()=> {
+  setChainToID(chainId === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli')
+  }, [chainId])
 
   async function handleSend(): Promise<void> {
     const sendAmountInWei = sendAmount && ethers.utils.parseUnits(sendAmount);
@@ -41,23 +46,34 @@ export const SwapForm: FC<SwapFormProps> = ({
         address,
         sendAmountInWei,
         0,
-        chainFromID,
+        chainId,
         tokenName,
       ]);
-      console.info('contract call successs', data);
+      console.info('contract call success', data);
+
+        toast({
+        title: 'Success',
+        description: `You swapped your tokens, not you need to redeem it on ${chainToID}`,
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
     } catch (err) {
       console.error('contract call failure', err);
+        toast({
+        title: 'Error',
+        description: 'Error with swapping your tokens',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
     }
   }
 
-  useEffect(() => {
-    const id = chainFromID && chainFromID === 8001 ? 5 : 8001;
-    setChainToID(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chainToID]);
+
 
   return (
-    <div>
+    <>
       <div>
         <div className='relative'>
           <input
@@ -102,7 +118,7 @@ export const SwapForm: FC<SwapFormProps> = ({
 
         <span className='text-white pt-4'>
           To :{' '}
-          {chainToID === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}
+          {chainToID}
         </span>
       </div>
       <button
@@ -111,7 +127,7 @@ export const SwapForm: FC<SwapFormProps> = ({
       >
         Send
       </button>
-    </div>
+    </>
   );
 };
 // TOKEN_ETH_ADDRESS='0xf121DaF9eDdF06F3f7DD56952F6BFd000BFffA61'

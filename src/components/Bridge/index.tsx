@@ -1,4 +1,4 @@
-import { Spinner } from '@chakra-ui/react';
+import { Spinner, useToast } from '@chakra-ui/react';
 import {
   useAddress,
   useChainId,
@@ -19,7 +19,7 @@ export const Bridge = () => {
   const [tokenName, setTokenName] = useState<ITokenName>();
   const address = useAddress();
   const chainFromID = useChainId();
-
+  const toast = useToast();
   const {
     contract: contractToken,
     isLoading: isLoadingToken,
@@ -38,6 +38,18 @@ export const Bridge = () => {
       setTokenName(tokenName);
     }
   }, [chainFromID]);
+
+  useEffect(() => {
+    ErrorToken &&
+      toast({
+        title: 'Error',
+        description: 'Error, please try later',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ErrorToken]);
 
   if (isLoadingToken) {
     return (
