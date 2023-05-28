@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Bridge } from '@/components/Bridge';
 
 export const Tabs = () => {
-  const categories = ['Swap', 'Facet'];
+  const categories = ['Swap / Redeem', 'Facet'];
   return (
     <div className='mt-16 w-full max-w-xl py-16 sm:px-0'>
       <Tab.Group>
@@ -27,10 +27,7 @@ export const Tabs = () => {
           {categories.map((_cat, idx) => (
             <Tab.Panel
               key={idx}
-              className={clsx(
-                'rounded-xl bg-blue-900 p-3 h-96',
-                'bg-blue-900 focus:outline-none'
-              )}
+              className='rounded-xl bg-blue-900 p-3 h-96 focus:outline-none'
             >
               {idx === 1 ? <p>redeem</p> : <Bridge />}
             </Tab.Panel>
