@@ -1,10 +1,6 @@
 /* eslint-disable no-console */
-import { useToast } from '@chakra-ui/react';
-import {
-  useAddress,
-  useContract,
-  useContractWrite,
-} from '@thirdweb-dev/react';
+import { Spinner, useToast } from '@chakra-ui/react';
+import { useAddress, useContract, useContractWrite } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
 import { FC, useEffect, useState } from 'react';
 
@@ -29,29 +25,25 @@ export const SwapForm: FC<SwapFormProps> = ({
 
   const { contract } = useContract(bridge_address(chainId));
   const { mutateAsync: swap, isLoading } = useContractWrite(contract, 'swap');
-// {chainId === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}
+  // {chainId === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}
   function handleMaxOut(): void {
     setSendAmount(balance.toString());
   }
 
-  useEffect(()=> {
-  setChainToID(chainId === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli')
-  }, [chainId])
+  useEffect(() => {
+    setChainToID(
+      chainId === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'
+    );
+  }, [chainId]);
 
   async function handleSend(): Promise<void> {
     const sendAmountInWei = sendAmount && ethers.utils.parseUnits(sendAmount);
-
+    console.log(sendAmountInWei, 'sendAmountInWei');
     try {
-      const data = await swap([
-        address,
-        sendAmountInWei,
-        0,
-        chainId,
-        tokenName,
-      ]);
+      const data = await swap([address, sendAmountInWei, 0, 5, 'eETH']);
       console.info('contract call success', data);
 
-        toast({
+      toast({
         title: 'Success',
         description: `You swapped your tokens, not you need to redeem it on ${chainToID}`,
         status: 'success',
@@ -60,7 +52,7 @@ export const SwapForm: FC<SwapFormProps> = ({
       });
     } catch (err) {
       console.error('contract call failure', err);
-        toast({
+      toast({
         title: 'Error',
         description: 'Error with swapping your tokens',
         status: 'error',
@@ -70,7 +62,19 @@ export const SwapForm: FC<SwapFormProps> = ({
     }
   }
 
-
+  if (isLoading) {
+    return (
+      <div className='flex justify-center items-center h-full'>
+        <Spinner
+          thickness='4px'
+          speed='0.65s'
+          emptyColor='gray.200'
+          color='blue.500'
+          size='xl'
+        />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -92,11 +96,7 @@ export const SwapForm: FC<SwapFormProps> = ({
                 {tokenName}
               </span>
               <div className='w-9 h-9 rounded-full bg-white absolute right-2 top-2 flex items-center justify-center'>
-                <NextImage
-                  src='/icons/gETH.svg'
-                  alt='token'
-                  layout='fill'
-                />
+                <NextImage src='/icons/gETH.svg' alt='token' layout='fill' />
                 <div className='w-6 h-6 absolute bottom-0 -right-1'>
                   <NextImage
                     src={`/icons/${tokenName}.svg`}
@@ -115,10 +115,7 @@ export const SwapForm: FC<SwapFormProps> = ({
           </button>
         </div>
 
-        <span className='text-white pt-4'>
-          To :{' '}
-          {chainToID}
-        </span>
+        <span className='text-white pt-4'>To : {chainToID}</span>
       </div>
       <button
         onClick={handleSend}

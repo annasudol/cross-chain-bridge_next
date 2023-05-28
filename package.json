@@ -23,6 +23,7 @@
     "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.18",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@thirdweb-dev/sdk": "^3.10.17",
     "@web3-onboard/coinbase": "^2.2.4",
     "clsx": "^1.2.1",
