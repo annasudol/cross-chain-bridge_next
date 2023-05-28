@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Bridge } from '@/components/Bridge';
 
 export const Tabs = () => {
-  const categories = ['Bridge', 'Redeem'];
+  const categories = ['Swap', 'Facet'];
   return (
     <div className='mt-16 w-full max-w-xl py-16 sm:px-0'>
       <Tab.Group>
