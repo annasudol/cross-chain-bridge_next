@@ -1,86 +1,45 @@
 import { Spinner } from '@chakra-ui/react';
 import {
-  Alert,
-  AlertDescription,
-  AlertIcon,
-  AlertTitle,
-} from '@chakra-ui/react';
-import {
   useAddress,
   useChainId,
   useContract,
   useContractRead,
-  useContractWrite,
 } from '@thirdweb-dev/react';
 import { BigNumber, utils } from 'ethers';
-import { ethers } from "ethers";
 import { useEffect, useState } from 'react';
 
 import ChangeNetworkFrom from '@/components/ChangeNetwork/From';
-import NextImage from '@/components/NextImage';
+import { SwapForm } from '@/components/SwapForm';
 
-import { token_address } from '@/utils/contrants';
+import { ITokenName } from '@/type/token.types';
+import { token_address, token_name } from '@/utils/contrants';
 
 export const Bridge = () => {
-  const [sendAmount, setSendAmount] = useState<string>();
   const [balance, setBalance] = useState<number>(0);
+  const [tokenName, setTokenName] = useState<ITokenName>();
   const address = useAddress();
   const chainFromID = useChainId();
-  const [chainToID, setChainToID] = useState<number>(5);
 
   const {
-    contract: contractT,
-    isLoading: isLoadingT,
-    error: ErrorT,
+    contract: contractToken,
+    isLoading: isLoadingToken,
+    error: ErrorToken,
   } = useContract(token_address(chainFromID || 5));
-    const {
-    contract: contractB,
-    isLoading: isLoadingB,
-    error: ErrorB,
-  } = useContract('0xA097413a69B55fe1aB8D6F0a4612CdAaA21dc725');
-  const { mutateAsync: facet, isLoading: isLoadingBF } = useContractWrite(contractB, "facet");
-    const { mutateAsync: swap, isLoadingSwap } = useContractWrite(contractB, "swap")
 
-  const { data } = useContractRead(contractT, 'balanceOf', address);
-  const { data: symbol } = useContractRead(contractT, 'symbol');
-
-  function handleMaxOut(): void {
-    setSendAmount(balance);
-  }
-
-  // const call = async () => {
-  //   try {
-  //     const data = await facet(undefined);
-  //     console.info("contract call successs", data);
-  //   } catch (err) {
-  //     console.error("contract call failure", err);
-  //   }
-  // }
-  
-  async function handleSend(): Promise<void> {
-   const sendAmountInWei = sendAmount && ethers.utils.parseUnits(sendAmount)
-
-
-   try {
-      const data = await swap([address, sendAmountInWei, 0, chainFromID, symbol]);
-      console.info("contract call successs", data);
-    } catch (err) {
-      console.error("contract call failure", err);
-    }
-
-  }
+  const { data } = useContractRead(contractToken, 'balanceOf', address);
   useEffect(() => {
     const balance = data?._hex && BigNumber.from(data?._hex);
     balance && setBalance(Number(utils.formatEther(balance)) || 0);
   }, [data]);
 
   useEffect(() => {
-    const id = chainFromID && chainFromID === 8001 ? 5 : 8001;
-    setChainToID(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chainToID]);
+    const tokenName = chainFromID && token_name(chainFromID);
+    if (tokenName) {
+      setTokenName(tokenName);
+    }
+  }, [chainFromID]);
 
-  if (isLoadingT) {
+  if (isLoadingToken) {
     return (
       <div className='flex justify-center items-center h-full'>
         <Spinner
@@ -93,67 +52,16 @@ export const Bridge = () => {
       </div>
     );
   }
-
   return (
     <div className='p-6 flex flex-col'>
       <ChangeNetworkFrom chainID={chainFromID || 5} />
-      <div className='h-48'>
-        {ErrorT ? (
-          <Alert status='error' className='rounded-md'>
-            <AlertIcon />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>Error with importing contract</AlertDescription>
-          </Alert>
-        ) : (
-          <div className='relative'>
-            <input
-              placeholder=''
-              className='w-[100%] rounded-md bg-gray-100 bg-opacity-5 px-4 py-3 text-base text-white outline-non border-white border-opacity-10'
-              type='text'
-              pattern='^-?[0-9]\d*\.?\d*$'
-              value={sendAmount}
-              max={balance}
-              min={0.05}
-              onChange={(e) => setSendAmount(e.target.value)}
-            />
-            {symbol && (
-              <>
-                <span className='text-white absolute right-12 top-3'>
-                  {symbol}
-                </span>
-                <div className='w-9 h-9 rounded-full bg-white absolute right-2 top-2 flex items-center justify-center'>
-                  <NextImage
-                    src='/icons/eETH.svg'
-                    alt='symbol'
-                    width={15}
-                    height={15}
-                  />
-                  <div className='w-6 h-6 absolute bottom-0 -right-1'>
-                    <NextImage
-                      src={`/icons/${symbol}.svg`}
-                      layout='fill'
-                      alt={symbol}
-                    />
-                  </div>
-                </div>
-              </>
-            )}
-            <button
-              className='text-white underline p-2 text-sm'
-              onClick={handleMaxOut}
-            >
-              Max {balance.toFixed(2)}
-            </button>
-          </div>
-        )}
-        <span className='text-white pt-4'>
-          To :{' '}
-          {chainToID === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}
-        </span>
-      </div>
-      <button onClick={handleSend} className='self-center mt-2 w-60 items-center justify-items-center rounded-full border border-transparent bg-green-100 px-4 py-2 text-base font-medium text-blue-900 shadow-sm hover:bg-green-200 focus:outline-none '>
-        Send
-      </button>
+      {chainFromID && tokenName && (
+        <SwapForm
+          chainId={chainFromID}
+          balance={balance}
+          tokenName={tokenName}
+        />
+      )}
     </div>
   );
 };

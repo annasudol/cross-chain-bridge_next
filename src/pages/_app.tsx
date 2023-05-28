@@ -7,9 +7,7 @@ import '@/styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThirdwebProvider
-      supportedChains={[Goerli, BinanceTestnet]}
-    >
+    <ThirdwebProvider supportedChains={[Goerli, BinanceTestnet]}>
       <ChakraProvider>
         <Component {...pageProps} />
       </ChakraProvider>
