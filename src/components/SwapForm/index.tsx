@@ -93,10 +93,9 @@ export const SwapForm: FC<SwapFormProps> = ({
               </span>
               <div className='w-9 h-9 rounded-full bg-white absolute right-2 top-2 flex items-center justify-center'>
                 <NextImage
-                  src='/icons/eETH.svg'
-                  alt='tokenName'
-                  width={15}
-                  height={15}
+                  src='/icons/gETH.svg'
+                  alt='token'
+                  layout='fill'
                 />
                 <div className='w-6 h-6 absolute bottom-0 -right-1'>
                   <NextImage
