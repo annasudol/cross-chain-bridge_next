@@ -114,12 +114,11 @@ export const SwapForm: FC<SwapFormProps> = ({
             Max {balance.toFixed(2)}
           </button>
         </div>
-
         <span className='text-white pt-4'>To : {chainToID}</span>
       </div>
       <button
         onClick={handleSend}
-        className='self-center mt-2 w-60 items-center justify-items-center rounded-full border border-transparent bg-green-100 px-4 py-2 text-base font-medium text-blue-900 shadow-sm hover:bg-green-200 focus:outline-none '
+        className='self-center mt-12 w-60 items-center justify-items-center rounded-full border border-transparent bg-green-100 px-4 py-2 text-base font-medium text-blue-900 shadow-sm hover:bg-green-200 focus:outline-none '
       >
         Send
       </button>
