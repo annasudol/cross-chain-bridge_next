@@ -2,9 +2,10 @@ import { Tab } from '@headlessui/react';
 import clsx from 'clsx';
 
 import { Bridge } from '@/components/Bridge';
+import { Redeem } from '@/components/Redeem';
 
 export const Tabs = () => {
-  const categories = ['Swap / Redeem', 'Facet'];
+  const categories = ['Swap', 'Redeem'];
   return (
     <div className='mt-16 w-full max-w-xl py-16 sm:px-0'>
       <Tab.Group>
@@ -27,9 +28,9 @@ export const Tabs = () => {
           {categories.map((_cat, idx) => (
             <Tab.Panel
               key={idx}
-              className='rounded-xl bg-blue-900 p-3 h-96 focus:outline-none'
+              className='rounded-xl bg-blue-900 p-3 h-80 focus:outline-none'
             >
-              {idx === 1 ? <p>redeem</p> : <Bridge />}
+              {idx === 1 ? <Redeem /> : <Bridge />}
             </Tab.Panel>
           ))}
         </Tab.Panels>

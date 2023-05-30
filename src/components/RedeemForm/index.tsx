@@ -8,27 +8,25 @@ import NextImage from '@/components/NextImage';
 
 import { ITokenName } from '@/type/token.types';
 import { bridge_address } from '@/utils/contrants';
-interface SwapFormProps {
+import { signMessage } from '@/utils/signMessage';
+
+interface RedeemFormProps {
   chainId: number;
-  balance: number;
   tokenName: ITokenName;
 }
-export const SwapForm: FC<SwapFormProps> = ({
+export const RedeemForm: FC<RedeemFormProps> = ({
   chainId,
-  balance,
   tokenName,
 }) => {
-  const [sendAmount, setSendAmount] = useState<string>();
+  const [sendAmount, setSendAmount] = useState<string>('1');
   const address = useAddress();
   const [chainToID, setChainToID] = useState<string>();
   const toast = useToast();
 
   const { contract } = useContract(bridge_address(chainId));
-  const { mutateAsync: swap, isLoading } = useContractWrite(contract, 'swap');
+  const { mutateAsync: redeem, isLoading } = useContractWrite(contract, "redeem")
   // {chainId === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}
-  function handleMaxOut(): void {
-    setSendAmount(balance.toString());
-  }
+
 
   useEffect(() => {
     setChainToID(
@@ -37,9 +35,14 @@ export const SwapForm: FC<SwapFormProps> = ({
   }, [chainId]);
 
   async function handleSend(): Promise<void> {
-    const sendAmountInWei = sendAmount && ethers.utils.parseUnits(sendAmount);
+    if(sendAmount && address) {
+  const sendAmountInWei = sendAmount && ethers.utils.parseUnits(sendAmount);
     try {
-      const data = await swap([address, sendAmountInWei, 0, 5, 'eETH']);
+      // const data = await swap([address, sendAmountInWei, 0, 5, 'eETH']);
+    const signature = await signMessage(address, sendAmount, 97, 'eETH');
+    console.log(signature, 'signamture')
+      const data = await redeem([address, address, sendAmountInWei, 0, 97, 'eETH', signature] );
+
       console.info('contract call success', data);
 
       toast({
@@ -60,6 +63,7 @@ export const SwapForm: FC<SwapFormProps> = ({
       });
     }
   }
+  }
 
   if (isLoading) {
     return (
@@ -79,7 +83,7 @@ export const SwapForm: FC<SwapFormProps> = ({
     <>
       <div>
         <div className='relative'>
-          <input
+          {/* <input
             placeholder=''
             className='w-[100%] rounded-md bg-gray-100 bg-opacity-5 px-4 py-3 text-base text-white outline-non border-white border-opacity-10'
             type='text'
@@ -88,7 +92,7 @@ export const SwapForm: FC<SwapFormProps> = ({
             max={balance}
             min={0.05}
             onChange={(e) => setSendAmount(e.target.value)}
-          />
+          /> */}
           {tokenName && (
             <>
               <span className='text-white absolute right-12 top-3'>
@@ -106,12 +110,7 @@ export const SwapForm: FC<SwapFormProps> = ({
               </div>
             </>
           )}
-          <button
-            className='text-white underline p-2 text-sm'
-            onClick={handleMaxOut}
-          >
-            Max {balance.toFixed(2)}
-          </button>
+   
         </div>
         <span className='text-white pt-4'>To : {chainToID}</span>
       </div>
@@ -119,7 +118,7 @@ export const SwapForm: FC<SwapFormProps> = ({
         onClick={handleSend}
         className='self-center mt-12 w-60 items-center justify-items-center rounded-full border border-transparent bg-green-100 px-4 py-2 text-base font-medium text-blue-900 shadow-sm hover:bg-green-200 focus:outline-none '
       >
-        Swap
+        Redeem
       </button>
     </>
   );
