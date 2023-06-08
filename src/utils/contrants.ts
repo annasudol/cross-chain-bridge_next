@@ -1,9 +1,12 @@
 import { ITokenName } from '@/type/token.types';
 
-export const TOKEN_SEPOLIA_ADDRESS = '0x5bd96d5DBC00e59B3d54A2AD4F0b2F822340f4A1';
-export const TOKEN_MUMBAI_ADDRESS = '0x3186eaF70736995bccdC8DD6856175CA148D95CE';
+export const TOKEN_SEPOLIA_ADDRESS =
+  '0x5bd96d5DBC00e59B3d54A2AD4F0b2F822340f4A1';
+export const TOKEN_MUMBAI_ADDRESS =
+  '0x3186eaF70736995bccdC8DD6856175CA148D95CE';
 
-export const BRIDGE_MUMBAI_ADDRESS = '0xBf4343288301eAc83D7e03414E72389F356ae061';
+export const BRIDGE_MUMBAI_ADDRESS =
+  '0xBf4343288301eAc83D7e03414E72389F356ae061';
 export const BRIDGE_SEPOLIA_ADDRESS =
   '0x11E47a0465D3933E372fD4A2854e897934Fd14d7';
 
@@ -45,4 +48,3 @@ export const chain_name = (id: number): string => {
   };
   return name[id] as string;
 };
-

@@ -32,9 +32,15 @@ export const SwapForm: FC<SwapFormProps> = ({
 
   async function handleSend(): Promise<void> {
     const sendAmountInWei = sendAmount && ethers.utils.parseUnits(sendAmount);
-    const token_symbol= token_name(chainFromID)
+    const token_symbol = token_name(chainFromID);
     try {
-      const data = await swap([address, sendAmountInWei, 0, chainToID, token_symbol]);
+      const data = await swap([
+        address,
+        sendAmountInWei,
+        0,
+        chainToID,
+        token_symbol,
+      ]);
       console.info('contract call success', data);
 
       toast({

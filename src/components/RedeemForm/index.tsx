@@ -7,53 +7,67 @@ import { FC, useState } from 'react';
 import NextImage from '@/components/NextImage';
 
 import { ITokenName } from '@/type/token.types';
-import { bridge_address, token_name } from '@/utils/contrants';
+import { token_name } from '@/utils/contrants';
 import { signMessage } from '@/utils/signMessage';
 interface RedeemFormProps {
   chainToID: number;
   tokenName: ITokenName;
 }
-export const RedeemForm: FC<RedeemFormProps> = ({
-  chainToID,
-  tokenName,
-}) => {
+export const RedeemForm: FC<RedeemFormProps> = ({ chainToID, tokenName }) => {
   const [sendAmount, setSendAmount] = useState<string>();
   const address = useAddress();
   const toast = useToast();
 
-  const { contract } = useContract(bridge_address(chainToID));
-  const { mutateAsync: redeem, isLoading } = useContractWrite(contract, 'redeem');
-
+  const { contract } = useContract("0xBf4343288301eAc83D7e03414E72389F356ae061");
+  const { mutateAsync: redeem, isLoading } = useContractWrite(
+    contract,
+    'redeem'
+  );
+console.log(contract, 'contract')
   async function handleSend(): Promise<void> {
-    const token_symbol= token_name(chainToID);
-    if(address && sendAmount) {
-          const sendAmountInWei = ethers.utils.parseUnits(sendAmount);
-  try {
-      //from, to, amount, nonce, _chainId, symbol, signature
-    const signature = await signMessage(address, sendAmountInWei, chainToID, token_symbol);
-    console.log(signature, 'signamture')
-      const data = await redeem([address, address, sendAmountInWei, 0, chainToID, token_symbol]);
-      console.info('contract call success', data);
+    const token_symbol = token_name(chainToID);
+    if (address && sendAmount) {
+      const sendAmountInWei = ethers.utils.parseUnits(sendAmount);
+      console.log(    address,
+          sendAmountInWei,
+          chainToID,
+          token_symbol)
+      try {
+        const signature = await signMessage(
+          address,
+          sendAmountInWei,
+          80001,
+          'mETH'
+        );
+        const data = await redeem([
+          address,
+          address,
+          sendAmountInWei,
+          0,
+          80001,
+          'mETH',
+          signature
+        ]);
+        console.info('contract call success', data);
 
-      toast({
-        title: 'Success',
-        description: `You redeemed your tokens successfully`,
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      });
-    } catch (err) {
-      console.error('contract call failure', err);
-      toast({
-        title: 'Error',
-        description: 'Error with swapping your tokens',
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      });
+        toast({
+          title: 'Success',
+          description: `You redeemed your tokens successfully`,
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
+      } catch (err) {
+        console.error('contract call failure', err);
+        toast({
+          title: 'Error',
+          description: 'Error with swapping your tokens',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
+      }
     }
-    }
-  
   }
 
   if (isLoading) {

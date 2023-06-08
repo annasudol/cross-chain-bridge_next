@@ -34,11 +34,11 @@ export const Bridge = () => {
   }, [data]);
 
   useEffect(() => {
-    if(chainFromID) {
-    const tokenName =  token_name(chainFromID);
-    setTokenName(tokenName);
-     const chainToId =  chainFromID === 11155111 ? 80001 : 11155111;
-     setChainToId(chainToId)
+    if (chainFromID) {
+      const tokenName = token_name(chainFromID);
+      setTokenName(tokenName);
+      const chainToId = chainFromID === 11155111 ? 80001 : 11155111;
+      setChainToId(chainToId);
     }
   }, [chainFromID]);
 

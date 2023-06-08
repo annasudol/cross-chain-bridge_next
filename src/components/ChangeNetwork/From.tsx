@@ -5,7 +5,7 @@ import { Select } from '@/components/Select';
 import { ChainType } from '@/type/chain.type';
 
 const chains: ChainType[] = [
-  { name: 'Ethereum Sepolia', id: 11155111},
+  { name: 'Ethereum Sepolia', id: 11155111 },
   { name: 'Polygon Mumbai', id: 80001 },
 ];
 const ChangeNetworkFrom: React.FC<{ chainID: number }> = ({ chainID }) => {
