@@ -1,6 +1,5 @@
 import { Spinner, useToast } from '@chakra-ui/react';
 import {
-  useAddress,
   useChainId,
   useContract,
 } from '@thirdweb-dev/react';
@@ -14,14 +13,13 @@ import { token_address, token_name } from '@/utils/contrants';
 
 export const Redeem = () => {
   const [tokenName, setTokenName] = useState<ITokenName>();
-  const address = useAddress();
   const chainFromID = useChainId();
   const toast = useToast();
   const {
     contract: contractToken,
     isLoading: isLoadingToken,
     error: ErrorToken,
-  } = useContract(token_address(chainFromID || 5));
+  } = useContract(token_address(chainFromID || 11155111));
 
 
 
@@ -59,10 +57,10 @@ export const Redeem = () => {
   }
   return (
     <div className='p-6 flex flex-col'>
-      <ChangeNetworkFrom chainID={chainFromID || 5} />
+      <ChangeNetworkFrom chainID={chainFromID || 11155111} />
       {chainFromID && tokenName && (
         <RedeemForm
-          chainId={chainFromID}
+          chainToID={chainFromID}
           tokenName={tokenName}
         />
       )}

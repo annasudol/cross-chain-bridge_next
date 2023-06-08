@@ -2,43 +2,39 @@
 import { Spinner, useToast } from '@chakra-ui/react';
 import { useAddress, useContract, useContractWrite } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 
 import NextImage from '@/components/NextImage';
 
 import { ITokenName } from '@/type/token.types';
-import { bridge_address } from '@/utils/contrants';
+import { bridge_address, chain_name, token_name } from '@/utils/contrants';
 interface SwapFormProps {
-  chainId: number;
+  chainToID: number;
+  chainFromID: number;
   balance: number;
   tokenName: ITokenName;
 }
 export const SwapForm: FC<SwapFormProps> = ({
-  chainId,
+  chainFromID,
+  chainToID,
   balance,
   tokenName,
 }) => {
   const [sendAmount, setSendAmount] = useState<string>();
   const address = useAddress();
-  const [chainToID, setChainToID] = useState<string>();
   const toast = useToast();
 
-  const { contract } = useContract(bridge_address(chainId));
+  const { contract } = useContract(bridge_address(chainFromID));
   const { mutateAsync: swap, isLoading } = useContractWrite(contract, 'swap');
   function handleMaxOut(): void {
     setSendAmount(balance.toString());
   }
 
-  useEffect(() => {
-    setChainToID(
-      chainId ===  80001 ? 'Ethereum Sepolia'  : 'Polygon Chain Testnet'
-    );
-  }, [chainId]);
-
   async function handleSend(): Promise<void> {
     const sendAmountInWei = sendAmount && ethers.utils.parseUnits(sendAmount);
+    const token_symbol= token_name(chainFromID)
     try {
-      const data = await swap([address, address, sendAmountInWei, 0, 5, 'eETH']);
+      const data = await swap([address, sendAmountInWei, 0, chainToID, token_symbol]);
       console.info('contract call success', data);
 
       toast({
@@ -112,7 +108,7 @@ export const SwapForm: FC<SwapFormProps> = ({
             Max {balance.toFixed(2)}
           </button>
         </div>
-        <span className='text-white pt-4'>To : {chainToID}</span>
+        <span className='text-white pt-4'>To : {chain_name(chainToID)}</span>
       </div>
       <button
         onClick={handleSend}

@@ -17,6 +17,7 @@ import { token_address, token_name } from '@/utils/contrants';
 export const Bridge = () => {
   const [balance, setBalance] = useState<number>(0);
   const [tokenName, setTokenName] = useState<ITokenName>();
+  const [chainToID, setChainToId] = useState<number>();
   const address = useAddress();
   const chainFromID = useChainId();
   const toast = useToast();
@@ -24,7 +25,7 @@ export const Bridge = () => {
     contract: contractToken,
     isLoading: isLoadingToken,
     error: ErrorToken,
-  } = useContract(token_address(chainFromID || 5));
+  } = useContract(token_address(chainFromID || 11155111));
 
   const { data } = useContractRead(contractToken, 'balanceOf', address);
   useEffect(() => {
@@ -33,9 +34,11 @@ export const Bridge = () => {
   }, [data]);
 
   useEffect(() => {
-    const tokenName = chainFromID && token_name(chainFromID);
-    if (tokenName) {
-      setTokenName(tokenName);
+    if(chainFromID) {
+    const tokenName =  token_name(chainFromID);
+    setTokenName(tokenName);
+     const chainToId =  chainFromID === 11155111 ? 80001 : 11155111;
+     setChainToId(chainToId)
     }
   }, [chainFromID]);
 
@@ -67,9 +70,10 @@ export const Bridge = () => {
   return (
     <div className='p-6 flex flex-col justify-between'>
       <ChangeNetworkFrom chainID={chainFromID || 11155111} />
-      {chainFromID && tokenName && (
+      {chainFromID && chainToID && tokenName && (
         <SwapForm
-          chainId={chainFromID}
+          chainFromID={chainFromID}
+          chainToID={chainToID}
           balance={balance}
           tokenName={tokenName}
         />

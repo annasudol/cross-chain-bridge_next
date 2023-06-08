@@ -9,7 +9,6 @@ import { BigNumber, utils } from 'ethers';
 import { useEffect, useState } from 'react';
 
 import ChangeNetworkFrom from '@/components/ChangeNetwork/From';
-import { SwapForm } from '@/components/SwapForm';
 
 import { ITokenName } from '@/type/token.types';
 import { token_address, token_name } from '@/utils/contrants';
@@ -24,7 +23,7 @@ export const Facet = () => {
     contract: contractToken,
     isLoading: isLoadingToken,
     error: ErrorToken,
-  } = useContract(token_address(chainFromID || 5));
+  } = useContract(token_address(chainFromID || 11155111));
 
   const { data } = useContractRead(contractToken, 'balanceOf', address);
   useEffect(() => {
@@ -66,14 +65,15 @@ export const Facet = () => {
   }
   return (
     <div className='p-6 flex flex-col'>
-      <ChangeNetworkFrom chainID={chainFromID || 5} />
-      {chainFromID && tokenName && (
-        <SwapForm
-          chainId={chainFromID}
-          balance={balance}
-          tokenName={tokenName}
-        />
-      )}
+      <ChangeNetworkFrom chainID={chainFromID || 11155111} />
+      {/* {chainFromID && tokenName && (
+        // <SwapForm
+        //   chainFromId={chainFromID}
+        //   chainToID={chainToId}
+        //   balance={balance}
+        //   tokenName={tokenName}
+        // />
+      )} */}
     </div>
   );
 };

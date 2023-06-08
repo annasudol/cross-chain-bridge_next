@@ -2,52 +2,42 @@
 import { Spinner, useToast } from '@chakra-ui/react';
 import { useAddress, useContract, useContractWrite } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 
 import NextImage from '@/components/NextImage';
 
 import { ITokenName } from '@/type/token.types';
-import { bridge_address } from '@/utils/contrants';
+import { bridge_address, token_name } from '@/utils/contrants';
 import { signMessage } from '@/utils/signMessage';
-
 interface RedeemFormProps {
-  chainId: number;
+  chainToID: number;
   tokenName: ITokenName;
 }
 export const RedeemForm: FC<RedeemFormProps> = ({
-  chainId,
+  chainToID,
   tokenName,
 }) => {
-  const [sendAmount, setSendAmount] = useState<string>('1');
+  const [sendAmount, setSendAmount] = useState<string>();
   const address = useAddress();
-  const [chainToID, setChainToID] = useState<string>();
   const toast = useToast();
 
-  const { contract } = useContract(bridge_address(chainId));
-  const { mutateAsync: redeem, isLoading } = useContractWrite(contract, "redeem")
-  // {chainId === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}
-
-
-  useEffect(() => {
-    setChainToID(
-      chainId === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'
-    );
-  }, [chainId]);
+  const { contract } = useContract(bridge_address(chainToID));
+  const { mutateAsync: redeem, isLoading } = useContractWrite(contract, 'redeem');
 
   async function handleSend(): Promise<void> {
-    if(sendAmount && address) {
-  const sendAmountInWei = sendAmount && ethers.utils.parseUnits(sendAmount);
-    try {
-      // const data = await swap([address, sendAmountInWei, 0, 5, 'eETH']);
-    const signature = await signMessage(address, sendAmount, 97, 'eETH');
+    const token_symbol= token_name(chainToID);
+    if(address && sendAmount) {
+          const sendAmountInWei = ethers.utils.parseUnits(sendAmount);
+  try {
+      //from, to, amount, nonce, _chainId, symbol, signature
+    const signature = await signMessage(address, sendAmountInWei, chainToID, token_symbol);
     console.log(signature, 'signamture')
-      const data = await redeem([address, address, sendAmountInWei, 0, 97, 'eETH', signature] );
-
+      const data = await redeem([address, address, sendAmountInWei, 0, chainToID, token_symbol]);
       console.info('contract call success', data);
 
       toast({
         title: 'Success',
-        description: `You swapped your tokens, not you need to redeem it on ${chainToID}`,
+        description: `You redeemed your tokens successfully`,
         status: 'success',
         duration: 9000,
         isClosable: true,
@@ -62,7 +52,8 @@ export const RedeemForm: FC<RedeemFormProps> = ({
         isClosable: true,
       });
     }
-  }
+    }
+  
   }
 
   if (isLoading) {
@@ -83,16 +74,15 @@ export const RedeemForm: FC<RedeemFormProps> = ({
     <>
       <div>
         <div className='relative'>
-          {/* <input
+          <input
             placeholder=''
             className='w-[100%] rounded-md bg-gray-100 bg-opacity-5 px-4 py-3 text-base text-white outline-non border-white border-opacity-10'
             type='text'
             pattern='^-?[0-9]\d*\.?\d*$'
             value={sendAmount}
-            max={balance}
             min={0.05}
             onChange={(e) => setSendAmount(e.target.value)}
-          /> */}
+          />
           {tokenName && (
             <>
               <span className='text-white absolute right-12 top-3'>
@@ -110,9 +100,7 @@ export const RedeemForm: FC<RedeemFormProps> = ({
               </div>
             </>
           )}
-   
         </div>
-        <span className='text-white pt-4'>To : {chainToID}</span>
       </div>
       <button
         onClick={handleSend}

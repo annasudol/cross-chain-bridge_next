@@ -37,3 +37,12 @@ export const token_name = (id: number): ITokenName => {
   };
   return name[id] as ITokenName;
 };
+
+export const chain_name = (id: number): string => {
+  const name: { [_id: number]: string } = {
+    11155111: 'Sepolia Ethereum',
+    80001: 'Mumbai Polygon',
+  };
+  return name[id] as string;
+};
+
