@@ -66,7 +66,7 @@ export const Bridge = () => {
   }
   return (
     <div className='p-6 flex flex-col justify-between'>
-      <ChangeNetworkFrom chainID={chainFromID || 5} />
+      <ChangeNetworkFrom chainID={chainFromID || 11155111} />
       {chainFromID && tokenName && (
         <SwapForm
           chainId={chainFromID}

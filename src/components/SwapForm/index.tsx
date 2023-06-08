@@ -25,21 +25,20 @@ export const SwapForm: FC<SwapFormProps> = ({
 
   const { contract } = useContract(bridge_address(chainId));
   const { mutateAsync: swap, isLoading } = useContractWrite(contract, 'swap');
-  // {chainId === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'}
   function handleMaxOut(): void {
     setSendAmount(balance.toString());
   }
 
   useEffect(() => {
     setChainToID(
-      chainId === 5 ? 'Binance Smart Chain Testnet' : 'Ethereum Goerli'
+      chainId ===  80001 ? 'Ethereum Sepolia'  : 'Polygon Chain Testnet'
     );
   }, [chainId]);
 
   async function handleSend(): Promise<void> {
     const sendAmountInWei = sendAmount && ethers.utils.parseUnits(sendAmount);
     try {
-      const data = await swap([address, sendAmountInWei, 0, 5, 'eETH']);
+      const data = await swap([address, address, sendAmountInWei, 0, 5, 'eETH']);
       console.info('contract call success', data);
 
       toast({
