@@ -1,1 +1,1 @@
-export type ITokenName = 'eETH' | 'bETH' | 'mETH';
+export type ITokenName = 'eETH' | 'mETH';
