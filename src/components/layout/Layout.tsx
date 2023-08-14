@@ -15,8 +15,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className='flex justify-center'>{children}</div>
         </section>
       </main>
-      <footer className='z-0 fixed bottom-2 left-0 inset-x-auto text-sm text-white w-full'>
-        <div className='max-w-xl text-center flex flex-col justify-center items-center'>
+      <footer className='z-0 fixed bottom-2 inset-x-auto text-sm text-white w-full  flex justify-center'>
+        <div className='max-w-xl text-center'>
           <p>
             © Copyright {new Date().getFullYear()} {AppConfig.title}
           </p>
