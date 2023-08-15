@@ -18,20 +18,19 @@ export const RedeemForm: FC<RedeemFormProps> = ({ chainToID, tokenName }) => {
   const address = useAddress();
   const toast = useToast();
 
-  const { contract } = useContract("0xBf4343288301eAc83D7e03414E72389F356ae061");
+  const { contract } = useContract(
+    '0xBf4343288301eAc83D7e03414E72389F356ae061'
+  );
   const { mutateAsync: redeem, isLoading } = useContractWrite(
     contract,
     'redeem'
   );
-console.log(contract, 'contract')
+  console.log(contract, 'contract');
   async function handleSend(): Promise<void> {
     const token_symbol = token_name(chainToID);
     if (address && sendAmount) {
       const sendAmountInWei = ethers.utils.parseUnits(sendAmount);
-      console.log(    address,
-          sendAmountInWei,
-          chainToID,
-          token_symbol)
+      console.log(address, sendAmountInWei, chainToID, token_symbol);
       try {
         const signature = await signMessage(
           address,
@@ -46,7 +45,7 @@ console.log(contract, 'contract')
           0,
           80001,
           'mETH',
-          signature
+          signature,
         ]);
         console.info('contract call success', data);
 
